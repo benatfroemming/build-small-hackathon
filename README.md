@@ -15,12 +15,6 @@ So I started wondering: what if you could just... invent new ones and teach an L
 🎬 [Watch demo video](https://huggingface.co/spaces/build-small-hackathon/emoji_studio/resolve/main/demo.mp4) |
 💬 [Social post](https://www.reddit.com/r/huggingface/comments/1u4x5fr/emoji_studio_my_project_for_hf_build_small/)
 
-## 🎬 Demo
-
-<video controls preload="metadata" width="100%">
-  <source src="./demo.mp4" type="video/mp4">
-</video>
-
 ## 🛠️ Models
 
 - **Qwen/Qwen3-8B** — chat and tool-calling to decide when to generate a new emoji
