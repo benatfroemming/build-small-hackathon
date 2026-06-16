@@ -1,24 +1,3 @@
----
-title: Emoji Studio
-emoji: 💬
-colorFrom: green
-colorTo: blue
-sdk: gradio
-sdk_version: 5.33.0
-app_file: app.py
-pinned: false
-license: apache-2.0
-short_description: Create emojis, give them meaning, and chat with them.
-tags:
-  - emoji
-  - image-generation
-  - chatbot
-  - agentic
-  - track:wood
-  - achievement:offbrand
-  - achievement:fieldnotes
----
-
 # 💬 Emoji Studio
 
 Have you ever thought '*there really should be an emoji for this*'? I have. Constantly.
@@ -39,7 +18,7 @@ So I started wondering: what if you could just... invent new ones and teach an L
 ## 🎬 Demo
 
 <video controls preload="metadata" width="100%">
-  <source src="https://huggingface.co/spaces/build-small-hackathon/emoji_studio/resolve/main/demo.mp4" type="video/mp4">
+  <source src="./demo.mp4" type="video/mp4">
 </video>
 
 ## 🛠️ Models
