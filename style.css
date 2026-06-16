@@ -1,0 +1,584 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+    width: 100% !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #0c0e14 !important;
+}
+
+body {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+}
+
+/* Collapse every Gradio wrapper between <body> and #app-shell out of the layout */
+body :has(#app-shell):not(#app-shell) {
+    display: contents !important;
+}
+
+/* ── Kill ALL Gradio wrapper scrollbars ── */
+.gradio-container,
+.gradio-container > div,
+.contain,
+.contain > div,
+#component-0,
+#component-0 > div {
+    overflow: hidden !important;
+}
+
+/* Hide all Gradio chrome we don't need */
+footer, .svelte-1ipelgc, .built-with { display: none !important; }
+
+.gradio-container { padding: 0 !important; }
+.contain { max-width: 100% !important; padding: 0 !important; }
+#component-0 { height: 100vh !important; overflow: hidden !important; }
+
+/* ── App shell ── */
+#app-shell {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    max-width: 780px;
+    margin: 0 auto;
+    background: #12151c;
+    border-left: 1px solid #1e2330;
+    border-right: 1px solid #1e2330;
+}
+
+/* ── Header ── */
+#app-header {
+    position: relative;
+    flex-shrink: 0;
+    padding: 14px 20px;
+    border-bottom: 1px solid #1e2330;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #12151c;
+}
+#app-header .logo {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+}
+#app-header .title { font-size: 15px; font-weight: 600; color: #f5f6fa; }
+#app-header .sub   { font-size: 12px; color: #7a8094; margin-top: 1px; line-height: 1.4; }
+
+#info-btn {
+    width: 32px !important;
+    height: 32px !important;
+    margin-left: auto;
+    flex-shrink: 0;
+    font-size: 16px !important;
+    background: transparent !important;
+    border: none !important;
+    color: #f5f6fa !important; /* fix: was inheriting gray */
+}
+#info-btn svg {
+    stroke: #f5f6fa !important; /* fix: force white stroke on the SVG icon */
+}
+#info-btn:hover {
+    background: transparent !important;
+    border: none !important;
+}
+
+#info-overlay {
+    position: absolute;
+    inset: 0;
+    background: #12151c;
+    z-index: 500;
+    display: none;
+    padding: 20px;
+    overflow-y: auto;
+}
+#info-overlay.open {
+    display: block;
+}
+
+#info-overlay > div:has(#info-close) {
+    position: static;
+}
+#info-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    border: 1px solid #2a3040;
+    background: #1a1e28;
+    color: #8b91a5;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+#info-close:hover { color: #f5f6fa; background: #252a38; }
+
+#info-content {
+    color: #f5f6fa !important; /* fix: was gray, now white */
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+    padding-top: 40px;
+}
+/* Gradio Markdown renders into nested divs — cascade the color down */
+#info-content * { color: inherit; }
+#info-content h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #f5f6fa;
+    margin-bottom: 12px;
+}
+
+/* ── Chat scroll area ── */
+#chat-display {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Chat scroll area ── */
+#chat-display {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* Collapse ALL Gradio wrapper divs inside chat-display out of layout */
+#chat-display > div,
+#chat-display > div > div {
+    display: contents !important;
+}
+
+#chat-scroll-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 16px;
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.15s;
+    flex: 1;
+    min-height: 0;
+    height: 0;
+}
+
+#chat-scroll-wrap:hover {
+    scrollbar-color: #2a3040 transparent;
+}
+
+/* ── Chat bubbles ── */
+.brow { display: flex; width: 100%; animation: fadeUp 0.2s ease; }
+@keyframes fadeUp { 
+    from { opacity: 0; } 
+    to   { opacity: 1; } 
+}
+.brow.u { justify-content: flex-end; }
+.brow.b { justify-content: flex-start; }
+
+.bbl {
+    max-width: 72%;
+    padding: 9px 14px;
+    font-size: 14px;
+    line-height: 1.6;
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+.bbl.u {
+    background: #5451eb;
+    color: #fff;
+    border-radius: 16px 16px 4px 16px;
+}
+.bbl.b {
+    background: #1a1e28;
+    color: #e4e6ed;
+    border-radius: 16px 16px 16px 4px;
+    border: 1px solid #252a38;
+}
+.bbl.sys {
+    background: transparent;
+    border: 1px dashed #353c4f;
+    color: #8b91a5;
+    font-size: 12px;
+    border-radius: 99px;
+    max-width: 90%;
+    text-align: center;
+    padding: 6px 16px;
+}
+.bbl img.gi {
+    display: block;
+    width: 140px; height: 140px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+.brow.sys-wrap { justify-content: center; }
+
+/* ── Bottom input zone ── */
+#input-zone {
+    flex-shrink: 0;
+    padding: 10px 14px 14px;
+    border-top: 1px solid #1e2330;
+    background: #12151c;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+#top-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 6px;
+    width: 100%;
+}
+
+#composer-wrap > div:first-child {
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+}
+
+#composer {
+    flex: 1 1 0%;
+    min-width: 0;
+    min-height: 40px;
+    max-height: 120px;
+    overflow-y: auto;
+    padding: 9px 13px;
+    font-size: 14px;
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.55;
+    color: #e4e6ed;
+    background: #1a1e28;
+    border: 1px solid #2a3040;
+    border-radius: 12px;
+    outline: none;
+    word-break: break-word;
+    transition: border-color 0.15s;
+    scrollbar-width: thin;
+    scrollbar-color: #2a3040 transparent;
+}
+#composer:focus { border-color: #5451eb; }
+#composer:empty::before {
+    content: attr(data-ph);
+    color: #4a5066;
+    pointer-events: none;
+}
+#composer img.ei {
+    display: inline;
+    height: 1.4em;
+    width: 1.4em;
+    vertical-align: -0.3em;
+    margin: 0 1px;
+}
+
+#emoji-pick-btn {
+    flex: 0 0 48px;
+    width: 48px;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 !important;
+    border-radius: 10px !important;
+    border: 1px solid #2a3040 !important;
+    background: #1a1e28 !important;
+    color: #f5f6fa !important;
+    cursor: pointer;
+}
+#emoji-pick-btn:hover {
+    border-color: #5451eb !important;
+    color: #c4caff !important;
+    background: #1e2038 !important;
+}
+#emoji-pick-btn svg {
+    width: 24px;
+    height: 24px;
+    stroke: #f5f6fa !important;
+}
+
+/* Hidden Gradio textbox that syncs with #composer */
+#hidden-txt { display: none !important; }
+
+/* ── Action buttons ── */
+.icon-btn {
+    padding: 0 !important;
+    border-radius: 10px !important;
+    border: 1px solid #2a3040 !important;
+    background: #1a1e28 !important;
+    color: #8b91a5 !important;
+    cursor: pointer;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 15px !important;
+    transition: border-color 0.15s, color 0.15s, background 0.15s !important;
+    box-shadow: none !important;
+}
+.icon-btn:hover {
+    border-color: #5451eb !important;
+    color: #c4caff !important;
+    background: #1e2038 !important;
+}
+.icon-btn:active { transform: scale(0.96); }
+
+/* ── Bottom send/clear row, 50/50 ── */
+#bottom-btn-row {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+}
+#bottom-btn-row > div {
+    flex: 1 1 50%;
+    min-width: 0;
+}
+#send-btn, #clear-btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 36px !important;
+}
+
+#send-btn {
+    padding: 0 14px !important;
+    background: #5451eb !important;
+    border-color: #5451eb !important;
+    color: #fff !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.01em !important;
+}
+#send-btn:hover {
+    background: #4240cc !important;
+    border-color: #4240cc !important;
+    color: #fff !important;
+}
+
+/* ── Emoji picker — FIXED OVERLAY, appended to body ── */
+#emoji-overlay-picker {
+    position: fixed;
+    z-index: 99999;
+    width: 280px;
+    background: #1a1e28;
+    border: 1px solid #2a3040;
+    border-radius: 14px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 2px 8px rgba(0,0,0,0.4);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+}
+#emoji-overlay-picker.eop-open {
+    display: flex;
+}
+
+#eop-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-bottom: 1px solid #252a38;
+}
+#eop-header span {
+    font-size: 11px;
+    font-weight: 600;
+    color: #8b91a5;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-family: 'Inter', system-ui, sans-serif;
+}
+#eop-close {
+    background: none;
+    border: none;
+    color: #8b91a5;
+    font-size: 18px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px 4px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+}
+#eop-close:hover { color: #f5f6fa; background: #252a38; }
+
+#eop-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+    padding: 10px;
+    max-height: 220px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #2a3040 transparent;
+}
+
+.eop-btn {
+    width: 100%;
+    aspect-ratio: 1;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    cursor: pointer;
+    padding: 5px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.1s, border-color 0.1s;
+    position: relative;
+}
+.eop-btn:hover {
+    background: #252a38;
+    border-color: #3a4258;
+}
+.eop-btn img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    display: block;
+    pointer-events: none;
+}
+.eop-tip {
+    position: fixed;
+    background: #252a38;
+    color: #e4e6ed;
+    font-size: 11px;
+    font-family: 'Inter', system-ui, sans-serif;
+    padding: 4px 9px;
+    border-radius: 6px;
+    white-space: nowrap;
+    pointer-events: none;
+    border: 1px solid #3a4258;
+    z-index: 100000;
+    display: none;
+}
+
+#eop-empty {
+    padding: 32px 16px;
+    text-align: center;
+    color: #4a5066;
+    font-size: 13px;
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.6;
+}
+
+.bbl.typing {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 14px;
+}
+.bbl.typing .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #8b91a5;
+    animation: typingBounce 1.2s infinite ease-in-out;
+}
+.bbl.typing .dot:nth-child(2) { animation-delay: 0.15s; }
+.bbl.typing .dot:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes typingBounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-4px); opacity: 1; }
+}
+
+#input-zone.disabled #composer {
+    opacity: 0.5;
+    pointer-events: none;
+}
+.icon-btn:disabled, #send-btn:disabled {
+    opacity: 0.4 !important;
+    cursor: not-allowed !important;
+}
+
+.pending, .generating, [class*="pending"], [class*="generating"] {
+    opacity: 1 !important;
+    filter: none !important;
+}
+.gradio-container .wrap.default, .wrap.svelte-zlszon {
+    display: none !important;
+}
+
+/* Markdown */
+#info-content p {
+    margin-bottom: 14px;
+}
+#info-content h2 {
+    margin-top: 28px;
+    margin-bottom: 12px;
+}
+#info-content h2:first-child {
+    margin-top: 0;
+}
+#info-content h3 {
+    margin-top: 22px;
+    margin-bottom: 8px;
+}
+#info-content ul, #info-content ol {
+    margin-bottom: 14px;
+    padding-left: 22px;
+}
+#info-content li {
+    margin-bottom: 6px;
+}
+#info-content hr {
+    margin: 24px 0;
+    border: none;
+    border-top: 1px solid #2a3040;
+}
+
+/* footer */
+#app-footer {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    text-align: center;
+    font-size: 11px;
+    color: #4a5066;
+    background: #12151c;
+    border-top: 1px solid #1e2330;
+}
+
+/* ===== Global thin scrollbar ===== */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #2a3040 transparent;
+}
+
+/* WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2a3040;
+    border-radius: 99px;
+    border: 1px solid transparent;
+    background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #3a4258;
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+.progress-text {
+    display: none !important;
+}
