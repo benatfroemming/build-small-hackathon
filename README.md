@@ -29,4 +29,8 @@ A total of $8B+12B=20B$ parameters. The first two models run via the Hugging Fac
 - **Bonus quests:** 🎨 Off-Brand · 📓 Field Notes
 - Built with Gradio 🐾 and hosted on Hugging Face 🤗
 
+## 🏅 Certificate 
+
+![certificate](./Certificate.png)
+
 
